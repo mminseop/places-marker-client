@@ -87,3 +87,29 @@ export function logoutUser(navigate) {
   localStorage.removeItem("places-token");
   navigate("/login");
 }
+
+// 유저 정보 조회
+export async function getUserInfo() {
+  try {
+    const tokenData = JSON.parse(localStorage.getItem("places-token"));
+    
+    if (!tokenData.token) {
+      return { success: false, message: "토큰이 없습니다." };
+    }
+
+    const res = await api.get("/api/auth/userinfo", {
+      headers: {
+        Authorization: `Bearer ${tokenData.token}`,
+      },
+    });
+
+    if (res.data.result === "success") {
+      return { success: true, data: res.data.data };
+    } else {
+      return { success: false, message: "유저 정보 조회 실패" };
+    }
+  } catch (e) {
+    console.error("유저정보 조회 에러:", e);
+    return { success: false, message: "유저 정보 조회 요청 실패" };
+  }
+}

@@ -1,9 +1,29 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FaUserCircle, FaCog, FaHeart } from "react-icons/fa";
 import Header from "../components/Header";
+import { getUserInfo } from "../api/auth";
+import { useEffect, useState } from "react";
 
 function MyPage() {
   const location = useLocation(); // 현재 경로 가져오기
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await getUserInfo();
+        if (res.success) {
+          setUser(res.data); // data 안에 userName, userEmail 가 있다고 가정
+        } else {
+          console.error(res.message);
+        }
+      } catch (error) {
+        console.error("유저 정보 조회 중 에러 발생:", error);
+      }
+    }
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -15,10 +35,10 @@ function MyPage() {
               <FaUserCircle size={80} className="my-page-profile-icon" />
             </div>
             <div className="my-page-profile-wrap-row my-page-side-user-name">
-              {/* {user.user_metadata.name} 님! */}
+              {user ? `${user.userName} 님!` : "로딩 중..."}
             </div>
             <div className="my-page-profile-wrap-row my-page-side-user-email">
-              {/* {user.email} */}
+              {user ? user.userEmail : ""}
             </div>
           </div>
           <div className="my-page-side-menu">

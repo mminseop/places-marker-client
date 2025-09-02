@@ -78,3 +78,23 @@ export async function getSavedPlaces(token) {
     return { success: false, message: "DB 조회 요청 실패" };
   }
 }
+
+// 장소 삭제
+export async function deletePlace(placeId, token) {
+  if (!token) return { success: false, message: "토큰이 없습니다." };
+
+  try {
+    const res = await api.delete(`/api/places/delete/${placeId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.data.result === "success") {
+      return { success: true, message: "삭제 성공" };
+    } else {
+      return { success: false, message: res.data.message || "삭제 실패" };
+    }
+  } catch (e) {
+    console.error("삭제 실패:", e);
+    return { success: false, message: "삭제 요청 실패" };
+  }
+}

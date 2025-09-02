@@ -663,7 +663,10 @@ $main-color-hover: #5196d6;
 // mypage -> UserPlaces.jsx 시작
 .user-places-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); // 카드 너비 줄임
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(300px, 1fr)
+  ); // 카드 너비 줄임
   gap: 1rem;
 }
 
@@ -741,21 +744,45 @@ $main-color-hover: #5196d6;
       font-weight: bold;
     }
   }
+  .place-button-wrap {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin: 15px 0;
+    border-top: 1px solid #ddd;
+    padding-top: 5px;
+    .detail-button {
+      margin-top: 0.6rem;
+      width: 100%;
+      background: $main-color;
+      color: #fff;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
 
-  .detail-button {
-    margin-top: 0.6rem;
-    width: 100%;
-    background: $main-color;
-    color: #fff;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: background 0.2s;
+      &:hover {
+        background: $main-color-hover;
+      }
+    }
 
-    &:hover {
-      background: $main-color-hover;
+    .delete-button {
+      margin-top: 0.6rem;
+      width: 100%;
+      background: #e74c3c;
+      color: #fff;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #c0392b;
+      }
     }
   }
 }

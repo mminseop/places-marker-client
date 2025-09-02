@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getSavedPlaces } from "../api/places";
+import { deletePlace, getSavedPlaces } from "../api/places";
 import { FaStar, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import { alertComfirm } from "../utils/alert";
 
 function UserPlaces() {
   const [places, setPlaces] = useState([]);
@@ -40,6 +41,25 @@ function UserPlaces() {
     fetchPlaces();
   }, []);
 
+ const handleDelete = async (placeId) => {
+  const stored = localStorage.getItem("places-token");
+  const token = stored ? JSON.parse(stored).token : null;
+
+  try {
+    await alertComfirm('정말 삭제하시겠습니까?', '삭제한 장소는 복구할 수 없습니다.')
+    const res = await deletePlace(placeId, token);
+
+    if (res.success) {
+      setPlaces((prev) => prev.filter((p) => p.id !== placeId));
+    } else {
+      setError(res.message);
+    }
+  } catch (err) {
+    console.error("삭제 실패:", err);
+    setError("삭제 요청 실패");
+  }
+};  
+
   if (loading) return <Loading loadingText="장소 불러오는 중" />;
   if (error) return <p className="error-text">{error}</p>;
   if (!places.length)
@@ -70,20 +90,28 @@ function UserPlaces() {
                   등록일 : {new Date(place.regDate).toLocaleDateString()}
                 </span>
               </div>
-              <button
-                className="detail-button"
-                onClick={() =>
-                  navigate("/", {
-                    state: {
-                      lat: place.lat,
-                      lng: place.lng,
-                      placeId: place.placeId,
-                    },
-                  })
-                }
-              >
-                지도에서 보기
-              </button>
+              <div className="place-button-wrap">
+                <button
+                  className="detail-button"
+                  onClick={() =>
+                    navigate("/", {
+                      state: {
+                        lat: place.lat,
+                        lng: place.lng,
+                        placeId: place.placeId,
+                      },
+                    })
+                  }
+                >
+                  지도에서 보기
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDelete(place.id)}
+                >
+                  삭제하기
+                </button>
+              </div>
             </div>
           </div>
         );
