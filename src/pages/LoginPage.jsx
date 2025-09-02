@@ -54,7 +54,7 @@ function LoginPage() {
     <div className="login-wrap">
       {/* 로고 */}
       <div className="login-logo">
-        <img src="/src/assets/logo.webp" alt="MyPlace 로고" />
+        <img src="logo.webp" alt="로고" />
       </div>
 
       {/* 문구 */}

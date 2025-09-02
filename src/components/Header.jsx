@@ -30,7 +30,7 @@ function Header({ onOpenModal }) {
     <header className="header">
       {/* 로고 */}
       <div className="header-logo" onClick={() => navigate("/")}>
-        <img src="/src/assets/logo.webp" alt="로고" />
+        <img src="logo.webp" alt="로고" />
       </div>
 
       {/* 오른쪽 버튼들 */}
