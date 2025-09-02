@@ -132,7 +132,7 @@ function SignupPage() {
     <div className="auth-wrap">
       {/* 로고 */}
       <div className="login-logo">
-        <img src="/src/assets/logo.webp" alt="로고" />
+        <img src="logo.webp" alt="로고" />
       </div>
 
       {/* 문구 */}
