@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FormGroup from "../components/FormGroup";
 import { getUserInfo, updateUserInfo } from "../api/auth"; // updateUserInfo 함수 추가 필요
-import { alertError, alertSuccess } from "../utils/alert";
+import { alertComfirm, alertError, alertSuccess } from "../utils/alert";
 
 function UserSettings() {
   const [activeMenu, setActiveMenu] = useState("basic"); // basic / security
@@ -70,7 +70,8 @@ function UserSettings() {
     if (!validateAll()) return;
 
     try {
-      // 백엔드 API 호출
+      await alertComfirm("회원정보 수정", "정말 수정하시겠습니까?");
+
       const res = await updateUserInfo({
         userName: formInput.userName,
         userPhone: formInput.userPhone,

@@ -46,10 +46,11 @@ function UserPlaces() {
     const token = stored ? JSON.parse(stored).token : null;
 
     try {
-      await alertComfirm(
+      const result = await alertComfirm(
         "정말 삭제하시겠습니까?",
         "삭제한 장소는 복구할 수 없습니다."
       );
+      if (!result.isConfirmed) return; // 아니요 누르면 여기서 함수 종료
       const res = await deletePlace(placeId, token);
 
       if (res.success) {
@@ -92,7 +93,10 @@ function UserPlaces() {
                 </div>
                 <div className="place-meta">
                   <span className="reg-date">
-                    등록일 :{new Date(place.regDate).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })}
+                    등록일 :
+                    {new Date(place.regDate).toLocaleDateString("ko-KR", {
+                      timeZone: "Asia/Seoul",
+                    })}
                   </span>
                 </div>
                 <div className="place-button-wrap">
