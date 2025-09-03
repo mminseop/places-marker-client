@@ -70,7 +70,11 @@ function UserSettings() {
     if (!validateAll()) return;
 
     try {
-      await alertComfirm("회원정보 수정", "정말 수정하시겠습니까?");
+      const result = await alertComfirm(
+        "회원정보 수정",
+        "정말 수정하시겠습니까?"
+      );
+      if (!result.isConfirmed) return; // 아니요 누르면 여기서 함수 종료
 
       const res = await updateUserInfo({
         userName: formInput.userName,

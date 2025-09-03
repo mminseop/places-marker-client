@@ -51,6 +51,7 @@ function UserPlaces() {
         "삭제한 장소는 복구할 수 없습니다."
       );
       if (!result.isConfirmed) return; // 아니요 누르면 여기서 함수 종료
+      
       const res = await deletePlace(placeId, token);
 
       if (res.success) {
