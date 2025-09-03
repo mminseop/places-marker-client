@@ -71,6 +71,11 @@ function SearchModal({ onClose, onSelect }) {
             onChange={(e) => setQuery(e.target.value)}
             className="search-input"
             placeholder="장소를 검색하세요"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
           />
           <button onClick={handleSearch} className="search-button">
             검색
