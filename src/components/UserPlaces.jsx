@@ -92,7 +92,7 @@ function UserPlaces() {
                 </div>
                 <div className="place-meta">
                   <span className="reg-date">
-                    등록일 : {new Date(place.regDate).toLocaleDateString()}
+                    등록일 :{new Date(place.regDate).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })}
                   </span>
                 </div>
                 <div className="place-button-wrap">
