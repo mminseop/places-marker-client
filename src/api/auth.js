@@ -113,3 +113,23 @@ export async function getUserInfo() {
     return { success: false, message: "유저 정보 조회 요청 실패" };
   }
 }
+
+// 유저 기본정보 변경
+export async function updateUserInfo({ userName, userPhone }) {
+  try {
+    const tokenData = JSON.parse(localStorage.getItem("places-token"));
+    if (!tokenData.token) return { success: false, message: "토큰 없음" };
+
+    const res = await api.put(
+      "/api/auth/update",
+      { userName, userPhone },
+      { headers: { Authorization: `Bearer ${tokenData.token}` } }
+    );
+
+    if (res.data.result === "success") return { success: true, data: res.data.data };
+    else return { success: false, message: res.data.message || "업데이트 실패" };
+  } catch (e) {
+    console.error("기본정보 수정 실패:", e);
+    return { success: false, message: "서버 요청 실패" };
+  }
+}

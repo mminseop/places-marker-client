@@ -9,7 +9,7 @@ import { alertError } from "../utils/alert";
 function MainPage() {
   const [markers, setMarkers] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [selectedPlace, setSelectedPlace] = useState(null);
   const location = useLocation();
   const { lat, lng, placeId } = location.state || {};
 
@@ -22,10 +22,16 @@ function MainPage() {
       const res = await getSavedPlaces(token);
       if (res.success) {
         const markerData = res.data.map((place) => ({
+          id: place.id,
+          placeId: place.placeId,
           lat: parseFloat(place.lat),
           lng: parseFloat(place.lng),
           name: place.placeName,
-          placeId: place.placeId,
+          address: place.placeAddress,
+          rating: place.rating,
+          userRatingsTotal: place.userRatingsTotal,
+          photos: place.photos ? JSON.parse(place.photos) : [],
+          regDate: place.regDate,
         }));
         setMarkers(markerData);
       } else {
@@ -43,8 +49,19 @@ function MainPage() {
       <div className="content-container">
         <NaverMap
           markers={markers}
-          focusPlace={{ lat, lng, placeId }} // 📌 지도에서 보기로 넘어왔을 때만 값 존재
+          focusPlace={{ lat, lng, placeId }} // 지도에서 보기로 넘어왔을 때만 값 존재
         />
+
+        {/* 선택된 마커 상세정보 */}
+        {selectedPlace && (
+          <div className="place-detail-card">
+            <h3>{selectedPlace.name}</h3>
+            <p>위도: {selectedPlace.lat}</p>
+            <p>경도: {selectedPlace.lng}</p>
+            {/* 버튼들 예시 */}
+            <button onClick={() => setSelectedPlace(null)}>닫기</button>
+          </div>
+        )}
 
         {modalOpen && (
           <SearchModal
