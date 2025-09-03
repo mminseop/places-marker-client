@@ -31,7 +31,7 @@ function NaverMap({ markers, focusPlace }) {
     }
 
     // focusPlace가 있을 때만 줌 당기기
-    if (focusPlace?.lat && focusPlace?.lng) {
+    if (focusPlace.lat && focusPlace.lng) {
       map.setCenter(new window.naver.maps.LatLng(focusPlace.lat, focusPlace.lng));
       map.setZoom(20); // 지도에서 보기 눌렀을 때만 확대
     }

@@ -41,24 +41,27 @@ function UserPlaces() {
     fetchPlaces();
   }, []);
 
- const handleDelete = async (placeId) => {
-  const stored = localStorage.getItem("places-token");
-  const token = stored ? JSON.parse(stored).token : null;
+  const handleDelete = async (placeId) => {
+    const stored = localStorage.getItem("places-token");
+    const token = stored ? JSON.parse(stored).token : null;
 
-  try {
-    await alertComfirm('정말 삭제하시겠습니까?', '삭제한 장소는 복구할 수 없습니다.')
-    const res = await deletePlace(placeId, token);
+    try {
+      await alertComfirm(
+        "정말 삭제하시겠습니까?",
+        "삭제한 장소는 복구할 수 없습니다."
+      );
+      const res = await deletePlace(placeId, token);
 
-    if (res.success) {
-      setPlaces((prev) => prev.filter((p) => p.id !== placeId));
-    } else {
-      setError(res.message);
+      if (res.success) {
+        setPlaces((prev) => prev.filter((p) => p.id !== placeId));
+      } else {
+        setError(res.message);
+      }
+    } catch (err) {
+      console.error("삭제 실패:", err);
+      setError("삭제 요청 실패");
     }
-  } catch (err) {
-    console.error("삭제 실패:", err);
-    setError("삭제 요청 실패");
-  }
-};  
+  };
 
   if (loading) return <Loading loadingText="장소 불러오는 중" />;
   if (error) return <p className="error-text">{error}</p>;
@@ -112,6 +115,17 @@ function UserPlaces() {
                   삭제하기
                 </button>
               </div>
+              <button
+                className="places-button"
+                onClick={() =>
+                  window.open(
+                    `https://www.google.com/maps/place/?q=place_id:${place.placeId}`,
+                    "_blank"
+                  )
+                }
+              >
+                구글 플레이스에서 보기
+              </button>
             </div>
           </div>
         );
