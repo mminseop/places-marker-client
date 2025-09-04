@@ -15,15 +15,20 @@ function UserSettings() {
   // 유저 정보 불러오기
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await getUserInfo();
-      if (res.success) {
-        setFormInput({
-          userEmail: res.data.userEmail,
-          userName: res.data.userName || "",
-          userPhone: res.data.userPhone || "",
-        });
-      } else {
-        alertError("정보 불러오기 실패", res.message);
+      try {
+        const res = await getUserInfo();
+        if (res.success) {
+          setFormInput({
+            userEmail: res.data.userEmail,
+            userName: res.data.userName || "",
+            userPhone: res.data.userPhone || "",
+          });
+        } else {
+          alertError("정보 불러오기 실패", res.message);
+        }
+      } catch (e) {
+        console.error(e);
+        alertError("정보 불러오기 실패", "알 수 없는 오류가 발생했습니다.");
       }
     };
     fetchUser();
