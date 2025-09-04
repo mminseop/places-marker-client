@@ -15,7 +15,7 @@ export async function registerUser({
 }) {
   try {
     const res = await api.post("/api/auth/register", {
-    // const res = await axios.post(`${EC2_HOST}/api/auth/register`, {
+      // const res = await axios.post(`${EC2_HOST}/api/auth/register`, {
       userEmail,
       userPassword,
       userName,
@@ -42,19 +42,17 @@ export async function loginUser({ userEmail, userPassword }) {
     });
 
     if (res.data.result === "success") {
-      const { accessToken, userId, userEmail: email } = res.data.data;
+      const { accessToken } = res.data.data;
 
       // 토큰 저장
       localStorage.setItem(
         "places-token",
         JSON.stringify({
           token: accessToken,
-          userId,
-          userEmail: email,
         })
       );
 
-      return { success: true, data: { accessToken, userId, userEmail } };
+      return { success: true, data: { accessToken } };
     } else {
       return { success: false, message: res.data.message || "로그인 실패" };
     }
@@ -70,12 +68,11 @@ export async function checkEmail(userEmail) {
     const res = await api.post(`/api/auth/checkemail`, {
       userEmail,
     });
-    
-    // 문자열 비교로 사용 가능 여부 판단
+
     const available = res.data.data === "사용 가능한 이메일입니다.";
-    if (available === true) return { success: available, message: res.data.data };
+    if (available === true)
+      return { success: available, message: res.data.data };
     else return { success: false, message: res.data.data };
-    
   } catch (e) {
     console.error("이메일 중복 확인 실패:", e);
     return { success: false, message: "이메일 중복 확인 실패" };
@@ -92,7 +89,7 @@ export function logoutUser(navigate) {
 export async function getUserInfo() {
   try {
     const tokenData = JSON.parse(localStorage.getItem("places-token"));
-    
+
     if (!tokenData.token) {
       return { success: false, message: "토큰이 없습니다." };
     }
@@ -126,8 +123,10 @@ export async function updateUserInfo({ userName, userPhone }) {
       { headers: { Authorization: `Bearer ${tokenData.token}` } }
     );
 
-    if (res.data.result === "success") return { success: true, data: res.data.data };
-    else return { success: false, message: res.data.message || "업데이트 실패" };
+    if (res.data.result === "success")
+      return { success: true, data: res.data.data };
+    else
+      return { success: false, message: res.data.message || "업데이트 실패" };
   } catch (e) {
     console.error("기본정보 수정 실패:", e);
     return { success: false, message: "서버 요청 실패" };
