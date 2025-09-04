@@ -159,9 +159,22 @@ function UserSettings() {
 
       {activeMenu === "security" && (
         <div className="security-settings">
-          <div className="security-button-wrap">
-            <button className="save-button">저장</button>
-          </div>
+          <FormGroup
+            label="현재 비밀번호"
+            name="currentPassword"
+            value={formInput.currentPassword}
+          />
+          <FormGroup
+            label="새 비밀번호"
+            name="newPassword"
+            value={formInput.newPassword}
+          />
+          <FormGroup
+            label="새 비밀번호 확인"
+            name="newPasswordCofirm"
+            value={formInput.newPasswordCofirm}
+          />
+          <button className="save-button">저장</button>
         </div>
       )}
     </>
